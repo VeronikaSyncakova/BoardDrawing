@@ -6,9 +6,10 @@
 #define TEST_FPS
 #endif // _DEBUG
 
-#include <SFML/Graphics.hpp>
+
 #include <string>
 #include "ScreenSize.h"
+#include "Board.h"
 
 /// <summary>
 /// @author RP
@@ -82,6 +83,7 @@ protected:
 	sf::Font m_arialFont;
 	// main window
 	sf::RenderWindow m_window;
+	Board m_whiteBoard;
 
 #ifdef TEST_FPS
 	sf::Text x_updateFPS;					// text used to display updates per second.

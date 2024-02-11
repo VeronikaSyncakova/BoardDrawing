@@ -23,6 +23,8 @@ void Game::init()
 		std::cout << "Error loading font file";
 	}
 
+	m_whiteBoard.init();
+
 #ifdef TEST_FPS
 	x_updateFPS.setFont(m_arialFont);
 	x_updateFPS.setPosition(20, 300);
@@ -84,6 +86,8 @@ void Game::processEvents()
 			m_window.close();
 		}
 		processGameEvents(event);
+		m_whiteBoard.processMouseEvent(event,m_window);
+
 	}
 }
 
@@ -105,6 +109,8 @@ void Game::processGameEvents(sf::Event& event)
 			break;
 		}
 	}
+	
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,7 +122,8 @@ void Game::update(double dt)
 ////////////////////////////////////////////////////////////
 void Game::render()
 {
-	m_window.clear(sf::Color(0, 0, 0, 0));
+	m_window.clear(sf::Color(255, 255, 255, 255));
+	m_whiteBoard.draw(m_window);
 #ifdef TEST_FPS
 	m_window.draw(x_updateFPS);
 	m_window.draw(x_drawFPS);
