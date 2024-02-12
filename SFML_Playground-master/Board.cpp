@@ -1,5 +1,6 @@
 #include "Board.h"
 
+//hardcoded default size
 Marker::Marker(sf::Color t_color, sf::Vector2f t_position) : m_color(t_color), m_position(t_position), m_size(sf::Vector2f(30.f, 30.f))
 {
     m_body.setFillColor(m_color);
@@ -17,6 +18,7 @@ sf::RectangleShape Marker::getBody()
     return m_body;
 }
 
+//collision with mouse
 bool Marker::chosen(sf::Vector2i t_mousePos)
 {
     if (m_position.x<=t_mousePos.x && m_position.x+m_size.x>=t_mousePos.x
@@ -26,15 +28,15 @@ bool Marker::chosen(sf::Vector2i t_mousePos)
     return false;
 }
 
+//hardcoded default marker positions
 Board::Board(): blackMarker(sf::Color::Black,sf::Vector2f(1400.f,50.f)), redMarker(sf::Color::Red, sf::Vector2f(1400.f, 100.f)), blueMarker(sf::Color::Blue, sf::Vector2f(1400.f, 150.f)), greenMarker(sf::Color::Green, sf::Vector2f(1400.f, 200.f)), currentMarker(&blackMarker)
 {
 }
 
 void Board::init()
 {
-	texture.create(ScreenSize::s_width, ScreenSize::s_height);
+	//texture.create(ScreenSize::s_width, ScreenSize::s_height);
     canDraw = false;
-    //lineColor = sf::Color::Black;
    
 }
 
@@ -44,6 +46,7 @@ void Board::processMouseEvent(sf::Event& t_event, sf::RenderWindow& t_window)
      if (t_event.type == sf::Event::MouseButtonPressed)
      {
          sf::Vector2i mousePos = sf::Mouse::getPosition(t_window);
+         //check if player chose a different marker
          if (blackMarker.chosen(mousePos))
              currentMarker = &blackMarker;
          else if (redMarker.chosen(mousePos))
@@ -52,7 +55,7 @@ void Board::processMouseEvent(sf::Event& t_event, sf::RenderWindow& t_window)
              currentMarker = &blueMarker;
          else if (greenMarker.chosen(mousePos))
              currentMarker = &greenMarker;
-         else
+         else //he wants to draw
              canDraw = true;
      }
      else if (t_event.type == sf::Event::MouseMoved )
@@ -60,12 +63,12 @@ void Board::processMouseEvent(sf::Event& t_event, sf::RenderWindow& t_window)
          if(canDraw)
             lines.push_back(sf::Vertex(sf::Vector2f::Vector2(sf::Mouse::getPosition(t_window)),currentMarker->getColor()));
          else
-             lines.push_back(sf::Vertex(sf::Vector2f::Vector2(sf::Mouse::getPosition(t_window)), sf::Color::White));
+             lines.push_back(sf::Vertex(sf::Vector2f::Vector2(sf::Mouse::getPosition(t_window)), sf::Color::Transparent));
      }
      else if (t_event.type == sf::Event::MouseButtonReleased)
      {
          canDraw = false;
-         texture.update(t_window); //found out it is not really needed
+         //texture.update(t_window); //found out it is not really needed
          //lines.clear();
      }
 }
@@ -73,9 +76,12 @@ void Board::processMouseEvent(sf::Event& t_event, sf::RenderWindow& t_window)
 void Board::draw(sf::RenderWindow& t_window)
 {
     //t_window.draw(sprite);
-    if(lines.size()>0)
+
+    //draw lines
+    if(lines.size()>0)//error check for empty vector
         t_window.draw(&lines[0], lines.size(), sf::LinesStrip);
 
+    //markers on the side of the whiteboard
     t_window.draw(blackMarker.getBody());
     t_window.draw(redMarker.getBody());
     t_window.draw(blueMarker.getBody());

@@ -3,16 +3,13 @@
 #include <vector>
 #include "ScreenSize.h"
 
-/// <summary>
-/// markers can have different colors and they have body which can be touched and "chosen"
-/// </summary>
 class Marker
 {
 public:
 	Marker(sf::Color t_color, sf::Vector2f t_position);
 	sf::Color getColor();
 	sf::RectangleShape getBody();
-	bool chosen(sf::Vector2i t_mousePos); //if the mouse clicked on the body
+	bool chosen(sf::Vector2i t_mousePos);
 
 private:
 	sf::RectangleShape m_body;
@@ -21,9 +18,6 @@ private:
 	sf::Color m_color;
 };
 
-/// <summary>
-/// board, currently handling everything
-/// </summary>
 class Board
 {
 public:
@@ -35,11 +29,11 @@ public:
 
 private:
 	std::vector <sf::Vertex> lines;
-	//sf::Texture texture;
+	sf::Texture texture;
 	//sf::Sprite sprite;
-	bool canDraw; //drawing flag
-	Marker* currentMarker; //points to current marker
-	//all the markers that the user can choose from
+	bool canDraw;
+	//sf::Color lineColor;
+	Marker* currentMarker;
 	Marker blackMarker;
 	Marker redMarker;
 	Marker blueMarker;
